@@ -5,10 +5,14 @@
 <html lang="en" style="position: relative; min-height: 100%;">
     <head>
         <title>Online Course Registration</title>
-        <meta charset="utf-8"> 
+        <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/AlgCommon/Contents/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="/AlgCommon/Contents/AlgCss/Site.css" rel="stylesheet" type="text/css"/>
+        <script
+          src="https://code.jquery.com/jquery-3.4.1.js"
+          integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+          crossorigin="anonymous"></script>
     </head>
     <body style="padding-top: 50px; margin-bottom: 60px;">
         <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
@@ -33,5 +37,5 @@
                         <li><?php echo isset($_SESSION['studentId']) ? '<a href="Logout.php">Log Out</a>' : '<a href="Login.php">Log Out</a>' ?></li>
                     </ul>
                 </div>
-            </div>  
+            </div>
         </nav>
