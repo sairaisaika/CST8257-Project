@@ -1,50 +1,37 @@
 <?php
-    include_once("./Lab5Common/Header.php");
+    include_once("./src/Lab5Common/Header.php");
 ?>
-<h2 style="text-align:center">My Pictures</h2>
-<div style="width:60%">
-    <div style="width:45%;height:300px" id="canvas"></div>
-    <div id="control">
-        <button id="rc" onclick="loadimage('acw')">Rotate anit Clockwise</button>
-        <button id="lc" onclick="loadimage('cw')">Rotate Clockwise</button>
+<link rel="stylesheet" type="text/css" href="./src/css/gallery.css" />
+<div class="container main">
+    <h2>My Pictures</h2>
+    <div class="row main">
+        <div class="col-md-8 col-sm-12">
+            <div id="canvas"></div>
+            <div id="control" hidden>
+                <button id="rc" onclick="loadimage('acw')"></button>
+                <button id="lc" onclick="loadimage('cw')"></button>
+                <button id="dl" onclick=""></button>
+                <button id="rm" onclick=""></button>
+            </div>
+        </div>
+        <aside class="col-md-4 col-sm-12">
+            <div contenteditable="true" class="sidetextbox">
+                <b>Description:</b><br/>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                <b>Comments:</b><br/>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+            </div>
+            <form action="add_comment.php" method="post">
+                <input hidden value="<?php echo $_GET["img"]; ?>" name="imgId" type="text" />
+                <textarea class="comments" name="comments" placeholder="Leave Comment..."></textarea>
+                <input type="submit" class="btn-primary submit" value="Add Comment" />
+            </form>
+        </aside>
     </div>
 </div>
-
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $.ajax({
-            type:"POST",
-            url:"./ImageLoader.php",
-            data:{imgId:"<?php if(!isset($_GET['img'])) header("Location: index.php"); echo $_GET['img']; ?>"},
-            success: function(response){
-                var jsonData = JSON.parse(response);
-                if(jsonData.img!='error'){
-                    $("#canvas").append(jsonData.img);
-                }else{
-                    alert("Opps, something went wrong!");
-                }
-            }
-        });
-        $("#canvas").append('')
-    });
-
-    function loadimage(direction) {
-        $.ajax({
-            type:"POST",
-            url:"ImageLoader.php",
-            data: {imgId:"<?php if(!isset($_GET['img'])) header("Location: index.php"); echo $_GET['img']; ?>", r:direction},
-            success: function(response){
-                var jsonData = JSON.parse(response);
-                //alert(jsonData.err);
-                if(jsonData.img!='error'){
-                    $("#canvas").html("");
-                    $("#canvas").append(jsonData.img);
-                }else{
-                    alert("Opps, something wrong!");
-                }
-            }
-        });
-    }
-</script>
-<?php include_once("./Lab5Common/Footer.php"); ?>
+<script type="text/javascript" src="./src/js/gallery.js"></script>
+<script src="https://kit.fontawesome.com/211a6b90b0.js" crossorigin="anonymous"></script>
+<?php include_once("./src/Lab5Common/Footer.php"); ?>

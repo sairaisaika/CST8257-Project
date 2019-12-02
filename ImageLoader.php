@@ -33,7 +33,7 @@
         $imgBuffer = ob_get_clean();
         $base64Img = base64_encode($imgBuffer);
         $mes = "Got ImgId: ".$_POST['imgId']."  Rotate?: ".($is_rotate?"yes":"no")."  Direction: ".$direction." Degree:".$rotate;
-        echo json_encode(array("err"=>$mes, "img"=> '<img style="height:100%;" src="data:image/jpeg;base64,'.$base64Img.'" />'));
+        echo json_encode(array("err"=>$mes, "img"=> '<img style="width:100%;" src="data:image/jpeg;base64,'.$base64Img.'" />'));
 
     }else{
         return;
