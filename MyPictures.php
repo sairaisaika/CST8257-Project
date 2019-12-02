@@ -2,7 +2,7 @@
     include_once("./Lab5Common/Header.php");
 ?>
 <hr/>
-<div>
+<div style="">
 <div style="width:45%;height:300px" id="canvas"></div>
 <div id="control">
     <button id="rc" onclick="loadimage('acw')">Rotate anit Clockwise</button>
