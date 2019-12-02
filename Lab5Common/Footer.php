@@ -5,7 +5,7 @@
         <a href="Functions.php"></a>
     </footer>
     <!--<script src="/Lab4/Lab4Scripts/Site.js" type="text/javascript"></script>-->
-    <script src="/AlgCommon/Scripts/jquery-2.2.4.min.js" type="text/javascript"></script>
-    <script src="/AlgCommon/Contents/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="./AlgCommon/Scripts/jquery-2.2.4.min.js" type="text/javascript"></script>
+    <script src="./AlgCommon/Contents/js/bootstrap.min.js" type="text/javascript"></script>
 </body>
 </html>
