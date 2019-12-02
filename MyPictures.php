@@ -1,7 +1,7 @@
 <?php
     include_once("./Lab5Common/Header.php");
 ?>
-<hr/>
+<h2 style="text-align:center">My Pictures</h2>
 <div style="">
 <div style="width:45%;height:300px" id="canvas"></div>
 <div id="control">
