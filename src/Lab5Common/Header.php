@@ -7,8 +7,8 @@
         <title>Online Course Registration</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="./AlgCommon/Contents/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="./AlgCommon/Contents/AlgCss/Site.css" rel="stylesheet" type="text/css"/><script
+        <link href="./src/AlgCommon/Contents/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="./src/AlgCommon/Contents/AlgCss/Site.css" rel="stylesheet" type="text/css"/><script
         src="https://code.jquery.com/jquery-3.4.1.js"
         integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
@@ -25,7 +25,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" style="padding: 10px" href="http://www.algonquincollege.com">
-                        <img src="./AlgCommon/Contents/img/AC.png" alt="Algonquin College" style="max-width:100%; max-height:100%;"/>
+                        <img src="./src/AlgCommon/Contents/img/AC.png" alt="Algonquin College" style="max-width:100%; max-height:100%;"/>
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
