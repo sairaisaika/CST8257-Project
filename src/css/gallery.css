@@ -23,7 +23,7 @@ h2{
 }
 #control{
     position: absolute;
-    bottom: 10px;
+    bottom: 130px;
     padding: 20px;
     width: 100%;
     text-align: center;
@@ -60,4 +60,16 @@ h2{
     width: 40px;
     height: 40px;
     border: none;
+}
+#thumbnail{
+    overflow-x:scroll;
+    overflow-y:hidden;
+    width: 100%;
+    margin-top: 10px;
+    height: 120px;
+    border: 1px solid;
+}
+.drp{
+    margin-bottom: 5px;
+    width: 100%;
 }
