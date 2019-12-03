@@ -39,6 +39,10 @@ $("#control").mouseenter(function(){
 });
 //Could be better
 
+function downloadImg(id){
+    window.location.href("./ImageDownload.php?imgId="+id);
+}
+
 function loadimage(direction) {
     $.ajax({
         type:"POST",

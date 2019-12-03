@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include_once("./src/Lab5Common/Connection.php");
     $rotate = 0.0;
     $direction = null;
     if(isset($_SESSION['rotate'])){
@@ -18,8 +19,13 @@
         if($is_rotate){
             $direction=$_POST['r'];
         }
+        $sql = "SELECT FileName from Picture where Picture_Id = :picid";
+        $imgDownload = $myPdo->prepare($sql);
+        $imgDownload->execute(['picid'=>$_POST['imgId']]);
+        $img_name = $imgDownload->fetch();
+        $img_path = "./imgs/".$img_name[0];
         ob_start();
-        $imgRes = imagecreatefromjpeg("./imgs/1.jpeg");
+        $imgRes = imagecreatefromjpeg($img_path);
         if($is_rotate){
             if($direction=="acw"){
                 $imgRes = imagerotate($imgRes, $rotate+90, 0);
