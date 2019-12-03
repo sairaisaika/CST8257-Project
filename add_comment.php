@@ -1,6 +1,9 @@
 <?php
     include_once("./src/Lab5Common/Connection.php");
-    $userId = "test";
+    if(!isset($_SESSION['userid'])){
+        header("Location: login.php");
+    }
+    $userId = $_SESSION['userid'];
     $img = $_POST['imgId'];
     $comment = $_POST['comments'];
     $sql = "INSERT INTO `Comment` (`Comment_Id`, `Author_Id`, `Picture_Id`, `Comment_Text`, `Date`) VALUES (NULL, :userId, :ImgId, :content, CURRENT_TIMESTAMP);";

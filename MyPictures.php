@@ -1,7 +1,11 @@
 <?php
     include_once("./src/Lab5Common/Header.php");
     include_once("./src/Lab5Common/Connection.php");
-    $userId = "test";
+    if(!isset($_SESSION['userid'])){
+        header("Location: login.php");
+    }
+    $userId = $_SESSION['userid'];
+
     //redirect user if not loged in
     $isPostback = isset($_GET['album']);
     //$albumName;
