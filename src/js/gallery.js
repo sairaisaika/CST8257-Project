@@ -40,7 +40,7 @@ $("#control").mouseenter(function(){
 //Could be better
 
 function downloadImg(id){
-    window.location.href("./ImageDownload.php?imgId="+id);
+    window.location.href = "./ImageDownload.php?imgId="+id;
 }
 
 function loadimage(direction) {
@@ -62,5 +62,5 @@ function loadimage(direction) {
 }
 
 function changeImg(imgId) {
-    window.location.href("./MyPictures.php?img="+imgId);
+    window.location.href = "./MyPictures.php?img="+imgId;
 }
