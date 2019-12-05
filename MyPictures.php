@@ -11,7 +11,7 @@
     $TheAlbum;
     $nullImages=false;
     //action=album&id
-    if($_GET['action']=="album"){
+    if(isset($_GET['action'])&&$_GET['action']=="album"){
         $_SESSION['album'] = $_GET['id'];
         $TheAlbum = $_SESSION['album'];
     }else{
