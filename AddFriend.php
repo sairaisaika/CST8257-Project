@@ -4,6 +4,10 @@
     include_once './src/Lab5Common/Functions.php';
     include_once './src/Lab5Common/Footer.php';
 
+    
+    
+    
+    
     if(!isset($_SESSION['userid'])){
         header("Location: login.php");
     }
@@ -23,36 +27,35 @@
         $pStmt = $myPdo->prepare($sql);
         $pStmt->execute([':userId' => $friendId]);
         $chekId = $pStmt->fetch();
-
+        
         $sql= "SELECT * FROM Friendship"
-                . "WHERE Friend_RequesterId = :requestrId AND Friend_RequesteeId = :requesteeId AND Status = :status";
+                . " WHERE Friend_RequesterId = :requestrId AND Friend_RequesteeId = :requesteeId AND Status = :status";
         $pStmt = $myPdo->prepare($sql);
         $pStmt->execute(array(':requestrId' => $_SESSION['userid'], ':requesteeId' => $_SESSION['friendId'], 'status' => 0));
         $request1 = $pStmt->fetch();
 
         $sql= "SELECT * FROM Friendship"
-                . "WHERE Friend_RequesterId = :requestrId AND Friend_RequesteeId = :requesteeId AND Status = :status";
+                . " WHERE Friend_RequesterId = :requestrId AND Friend_RequesteeId = :requesteeId AND Status = :status";
         $pStmt = $myPdo->prepare($sql);
         $pStmt->execute(array(':requestrId' => $_SESSION['friendId'], ':requesteeId' => $_SESSION['userid'], 'status' => 0));
         $request2 = $pStmt->fetch();
 
         $sql = "SELECT * FROM Friendship"
-                . "WHERE Friend_RequesterId = :friendId AND Friend_RequesteeId = :userId AND Status = :status";
+                . " WHERE Friend_RequesterId = :friendId AND Friend_RequesteeId = :userId AND Status = :status";
         $pStmt =$myPdo->prepare($sql);
         $pStmt->execute(array(':userId' => $_SESSION['userid'], ':friendId' => $_SESSION['friendId'], ':status' => 1));
         $pending = $pStmt->fetch();
-
+        
         $sql = "SELECT * FROM Friendship"
-                . "WHERE Friend_RequesterId = :userId AND Friend_RequesteeId = :friendId AND Status = :status";
+                . " WHERE Friend_RequesterId = :userId AND Friend_RequesteeId = :friendId AND Status = :status";
         $pStmt =$myPdo->prepare($sql);
         $pStmt->execute(array(':userId' => $_SESSION['userid'], ':friendId' => $_SESSION['friendId'], ':status' => 1));
         $pendingFriend = $pStmt->fetch();
-
-
+        
         if($pendingFriend != null){
             $friendError = "You can not send an invitation twice";
         }
-        else{
+        else {
             $sql = "SELECT UserId, Name FROM User WHERE UserId = :friendId";
             $pStmt = $myPdo->prepare($sql);
             $pStmt ->execute([':friendId' => $_SESSION['friendId']]);
@@ -61,21 +64,22 @@
             if($chekId == null){
                 $friendError = "There is no User with the ID!";
             }
-            else if($_SESSION['userid'] == $_SESSION['friendId']){
+            else if($_SESSION['userid']
+                    == $_SESSION['friendId']){
                 $friendError = "You can not send a friend request to yourself";
             }
             else if($request1 != null || $request2 != null){
                 $friendError = "This user is already a friend";
             }
             else if($pending != null){
-                $sql = "UPDATE Friendship SET Status = 'accepted'"
-                        . "WHERE Friend_RequesterId = : requesteeId AND Friend_RequesteeId = ':requesterId'";
+                $sql = "UPDATE Friendship SET Status = 1"
+                        . " WHERE Friend_RequesterId = :requesteeId AND Friend_RequesteeId = :requesterId";
                 $pStmt = $myPdo->prepare($sql);
                 $pStmt->execute(array(':requesterId' => $_SESSION['userid'], ':requesteeId' => $_SESSION['friendId']));
                 $pStmt->commit;
 
                 $sql = "INSERT INTO Friendship(Friend_RequesterId, Friend_RequesteeId, Status)"
-                        . "VALUES(:requesterId, :requesteeId, :status)";
+                        . " VALUES(:requesterId, :requesteeId, :status)";
                 $pStmt = $myPdo->prepar($sql);
                 $pStmt->execute(array(':requesterId' => $_SESSION['userid'], ':requesteeId' => $_SESSION['friendId'], ':status' => 0));
                 $pStmt->commit;
@@ -84,7 +88,7 @@
             }
             else{
                 $sql = "INSERT INTO Friendship (Friend_RequesterId, Friend_RequesteeId, Status)"
-                        . "VALUES(:requesterId, :requesteeId, :status)";
+                        . " VALUES(:requesterId, :requesteeId, :status)";
                 $pStmt = $myPdo->prepare($sql);
                 $pStmt->execute(array(':requesterId' => $_SESSION['userid'], ':requesteeId' => $_SESSION['friendId'], ':status' => 1));
 

@@ -139,7 +139,7 @@
         </table>
         <div class='form-group row'>               
             <label for='' class='col-lg-7 col-form-label'><b></b> </label>            
-            <div class='col-lg-3'>                    
+            <div >                    
             <button type='submit' name='defriendButton' class='btn btn-primary col-lg-5' onclick='return confirm("The selected friend will be defriended!")'>Defriend Selected</button>  
             </div> 
         </div>     
@@ -177,11 +177,11 @@
         <div class='form-group row'>               
             <label for='' class='col-lg-5 col-form-label'><b></b> </label>            
             <div class='col-lg-7'>                    
-            <button type='submit' name='accept' class='btn btn-primary col-lg-2'>Accept Selected</button>
+                <button type='submit' name='accept' class='btn btn-primary col-lg-2'>Accept Selected</button>
             </div> 
             <br>
             <div class='col-lg-7'> 
-            <button type='submit' name='deny' class='btn btn-primary ' onclick='return confirm("The selected request will be denied!")'>Deny Selected</button>
+                <button type='submit' name='deny' class='btn btn-primary ' onclick='return confirm("The selected request will be denied!")'>Deny Selected</button>
             </div>
          </div> 
         </div>
