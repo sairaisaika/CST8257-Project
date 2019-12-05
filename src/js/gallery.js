@@ -64,3 +64,7 @@ function loadimage(direction) {
 function changeImg(imgId) {
     window.location.href = "./MyPictures.php?img="+imgId;
 }
+
+function changeImgFri(imgId) {
+    window.location.href = "./FriendPictures.php?img="+imgId;
+}
