@@ -10,17 +10,69 @@
     $TheAlbum;
     $nullImages=false;
     $friendId;
+    $friendName;
+    $isFriend = false;
+    if(isset($_GET['friendId'])){
+        $_SESSION['friendId']=$_GET['friendId'];
+        $friendId = $_SESSION['friendId'];
+    }else if(isset($_SESSION['friendId'])){
+        $friendId = $_SESSION['friendId'];
+    }else{
+        header("Location: login.php");
+    }
+    if(!$friendId){
+        Header("Location: Index.php");
+        return;
+    }else {
+        $sqlFriendValidation = "SELECT * FROM CST8257.Friendship where (Friendship.Friend_RequesteeId=:userId or Friendship.Friend_RequesterId=:userId) and Friendship.Status=0;";
+        $fv = $myPdo->prepare($sqlFriendValidation);
+        $fv->execute(['userId'=>$userId]);
+        foreach ($fv as $friShip) {
+            if($friShip["Friend_RequesterId"]==$friendId||$friShip["Friend_RequesteeId"]==$friendId){
+                if($friShip["Status"]==0)
+                    $isFriend = true;
+            }
+        }
+    }
+    if(!$isFriend){
+        Header("Location: Index.php");
+    }
 
-    // if(isset($_GET['friendId'])){
-    //     $_SESSION['friendId']=$_GET['friendId'];
-    //     $friendId = $_SESSION['friendId'];
-    // }else{
-    //     $friendId = $_SESSION['friendId'];
-    // }
-    // if(!$friendId){
-    //     Header("Location: Index.php");
-    //     return;
-    // }
+
+    if(isset($_POST['album'])){
+        $_SESSION['albumFr'] = $_POST['album'];
+        $TheAlbum = $_SESSION['albumFr'];
+    }else {
+        if(isset($_SESSION['albumFr'])){
+            $TheAlbum = $_SESSION['albumFr'];
+        }else{
+            $sqlAl = "SELECT * from Album where Owner_Id=:userId";
+            $Albs = $myPdo->prepare($sqlAl);
+            $Albs->execute(['userId'=>$friendId]);
+            $fA = $Albs->fetch();
+            $TheAlbum = $fA["Album_Id"];
+        }
+    }
+    if(isset($_GET['img'])){
+        $defImgSql = "SELECT * from Picture where Picture_Id=:pcid";
+        $defImgStatement = $myPdo->prepare($defImgSql);
+        $defImgStatement->execute(['pcid'=>$_GET['img']]);
+        $pic = $defImgStatement->fetch();
+        if($pic["Album_Id"]!=$TheAlbum&&$_GET['img']!=null){
+            header("Location: FriendPictures.php");
+        }else if($_GET['img']==null){
+            $nullImages = true;
+        }
+        $TheImg = $_GET['img'];
+    }else {
+        $defImgSql = "SELECT * from Picture where Album_Id=:alid";
+        $defImgStatement = $myPdo->prepare($defImgSql);
+        $defImgStatement->execute(['alid'=>$TheAlbum]);
+        $defImgInfo = $defImgStatement->fetch();
+        $defImg = $defImgInfo['Picture_Id'];
+        $TheImg = $defImg;
+        header("Location: FriendPictures.php?img=".$defImg);
+    }
     // $sqlFriendValidation = "SELECT  from User where "
     // if(isset($_POST['album'])){
     //     $_SESSION['album'] = $_POST['album'];
@@ -59,17 +111,17 @@
 ?>
 <link rel="stylesheet" type="text/css" href="./src/css/gallery.css" />
 <div class="container main">
-    <h2>My Pictures</h2>
+    <h2><?php echo $friendId; ?> Pictures</h2>
     <div class="row main">
         <div class="col-md-8 col-sm-12">
             <form action="FriendPictures.php" method="post">
                 <select name="album" onchange="this.form.submit()" class="drp">
                     <?php
-                        $sqlAl = "SELECT * from Album where Owner_Id=:userId";
+                        $sqlAl = "SELECT * from Album where Owner_Id=:userId and Accessibility_Code='shared'";
                         $Albs = $myPdo->prepare($sqlAl);
-                        $Albs->execute(['userId'=>$userId]);
+                        $Albs->execute(['userId'=>$friendId]);
                         if($Albs->rowCount()==0){
-                            echo "<script>alert('You do not have any Album!');window.location.href('index.php');</script>";
+                            echo "<script>alert('Your Friend does not have any Album!');window.location.href('index.php');</script>";
                             return;
                         }
                         foreach ($Albs as $aa) {
@@ -82,15 +134,15 @@
                 </select>
             </form>
             <h2><?php echo $TheAlbum; ?></h2>
-            <?php if($nullImages){ echo "<script>alert('You do not have any Photos in this Album!');</script>"; return; } ?>
+            <?php if($nullImages){ echo "<script>alert('Your Friend does not have any Photos in this Album!');</script>"; return; } ?>
             <div id="canvas"></div>
             <div id="thumbnail">
                 <?php
                     $sqlAl = "SELECT * from Album where Owner_Id=:userId";
                     $Albs = $myPdo->prepare($sqlAl);
-                    $Albs->execute(['userId'=>$userId]);
+                    $Albs->execute(['userId'=>$friendId]);
                     $theA = $Albs->fetch();
-                    if($theA["Owner_Id"]==$userId){
+                    if($theA["Owner_Id"]==$friendId){
 
                     }
                     $sql = "SELECT * from Picture where Album_Id=:Album_Id";
@@ -134,6 +186,7 @@
             </div>
             <form action="add_comment.php" method="post">
                 <input hidden value="<?php echo $_GET["img"]; ?>" name="imgId" type="text" />
+                <input hidden value="friend" name="friend" type="text" />
                 <textarea class="comments" name="comments" placeholder="Leave Comment..."></textarea>
                 <input type="submit" class="btn-primary submit" value="Add Comment" />
             </form>

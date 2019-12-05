@@ -10,7 +10,10 @@
     $sql = "INSERT INTO `Comment` (`Comment_Id`, `Author_Id`, `Picture_Id`, `Comment_Text`, `Date`) VALUES (NULL, :userId, :ImgId, :content, CURRENT_TIMESTAMP);";
     $imgDownload = $myPdo->prepare($sql);
     if($imgDownload->execute(['userId'=>$userId,'ImgId'=>$img,'content'=>$comment])){
-        header("Location: MyPictures.php?img=".$img);
+        if(isset($_POST['friend'])&&$_POST['friend']=="friend")
+            header("Location: FriendPictures.php?img=".$img);
+        else
+            header("Location: MyPictures.php?img=".$img);
     }else{
         echo "Failed to add comment";
     }
