@@ -50,7 +50,7 @@
             $titleError = "Album title already exists!";
         }
         
-        if($titleError == "" && $acessibilityError == ""){
+        if($titleError == "" && $accessibilityError == ""){
             $albumId = null;
             $date = date("Y/m/d");
             $access = $_POST['accessibility']; 
@@ -116,7 +116,7 @@
                         ?>         
                 </select>  
                 </div>  
-                <div class='col-lg-3' style='color:red'> <?php print $acessibilityError;?></div>
+                <div class='col-lg-3' style='color:red'> <?php print $accessibilityError;?></div>
             </div>
             
             <div class='form-group row'>
