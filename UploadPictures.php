@@ -30,7 +30,7 @@
         $album_id = $_POST['album'];
     }
 //    echo $album_id;
-//    
+    
     //Use an array to hold supported image types for convenience
     $supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
     
@@ -46,29 +46,48 @@
         if ($_FILES['imgUpload']['error'][0] == 0)
         { 	
             $total = count($_FILES['imgUpload']['name']);
+            $number = 0;
             for( $i=0 ; $i < $total ; $i++ ) {
 
                 //Get the temp file path
                 $tmpFilePath = $_FILES['imgUpload']['tmp_name'][$i];
-
+                
+                
+                
                 //Make sure we have a file path
                 if ($tmpFilePath != ""){
                     //Setup our new file path
                     $newFilePath = "./imgs/" . $_FILES['imgUpload']['name'][$i];
-
+                    //$newFilePath = "./imgs/" . time().".";
                     //Upload the file into the temp dir
                     if(move_uploaded_file($tmpFilePath, $newFilePath)) {
                         //echo "<script>alert('copy success')</script>";
+                        $exploded = explode('.',$newFilePath);
+                        $ext = $exploded[count($exploded) - 1]; 
+                        if (preg_match('/jpg|jpeg/i',$ext))
+                            $imageTmp=imagecreatefromjpeg($newFilePath);
+                        else if (preg_match('/png/i',$ext))
+                            $imageTmp=imagecreatefrompng($newFilePath);
+                        else if (preg_match('/gif/i',$ext))
+                            $imageTmp=imagecreatefromgif($newFilePath);
+                        else if (preg_match('/bmp/i',$ext))
+                            $imageTmp=imagecreatefrombmp($newFilePath);
+                        else{
+                            header("Location: Index.php");
+                            return;
+                        }
+                        ob_start();
+                        imagejpeg($imageTmp);
+                        $data = ob_get_clean();
+                        $fileName = time()."-".$number.".jpeg";
+                        file_put_contents('./imgs/'.$fileName,$data);
                         $sqlQ = "INSERT INTO Picture (Album_Id, FileName, Title, Description, Date_Added) VALUES (:Album_Id, :FileName, :Title, :Description, :Date_Added);";
-                        $pQ = $myPdo -> prepare($sqlQ);
-    //                    echo $_FILES['imgUpload']['name'][$i];
-
-                        $pQ -> execute(['Album_Id' => $album_id, 'FileName' => $_FILES['imgUpload']['name'][$i], 'Title' => $title, 'Description' => $description, 'Date_Added' => date('Y-m-d')]);
-    //                    var_dump($pQ->errorInfo());
+                        $pQ = $myPdo->prepare($sqlQ);
+                        $pQ -> execute(['Album_Id' => $album_id, 'FileName' => $fileName, 'Title' => $title, 'Description' => $description, 'Date_Added' => date('Y-m-d')]);
+                        $number++;
+                        unlink($newFilePath);
                     }
-//                    else{
-//                    echo "<script>alert('copy failed')</script>";
-//                    }
+                    
                 }
             }
 //            $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION);
