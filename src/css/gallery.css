@@ -64,6 +64,7 @@ h2{
 #thumbnail{
     overflow-x:scroll;
     overflow-y:hidden;
+    display: inline-block;
     width: 100%;
     margin-top: 10px;
     height: 120px;
