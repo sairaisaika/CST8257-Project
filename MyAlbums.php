@@ -34,8 +34,11 @@
         $stmt = $myPdo->prepare($deletePictures);
         $delalbum = "DELETE FROM Album WHERE Album.Album_Id = :albumID";
         $stmt1 = $myPdo->prepare($delalbum);
-        $stmt->execute([albumID => $ID]);
+        $stmt->execute([':albumID' => $ID]);
         $stmt1->execute([':albumID' => $ID]);
+        
+        header('Location: MyAlbums.php');
+        exit; 
     }  
     
     $accessibilityArray = null;
