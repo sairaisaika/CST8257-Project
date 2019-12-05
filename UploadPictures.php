@@ -5,18 +5,8 @@
     include_once './src/Lab5Common/Connection.php';
     include_once './src/Lab5Common/functions.php';
     @session_start();
-    
+
     //define constants for convenience
-    define(ORIGINAL_IMAGE_DESTINATION, "./originals"); 
-
-    define(IMAGE_DESTINATION, "./imgs"); 
-    define(IMAGE_MAX_WIDTH, 800);
-    define(IMAGE_MAX_HEIGHT, 600);
-
-    define(THUMB_DESTINATION, "./thumbnails");  
-    define(THUMB_MAX_WIDTH, 100);
-    define(THUMB_MAX_HEIGHT, 100);
-    
     $title;
     $description;
     $album_id;
@@ -30,30 +20,30 @@
         $album_id = $_POST['album'];
     }
 //    echo $album_id;
-    
+
     //Use an array to hold supported image types for convenience
     $supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
-    
+
     if(!isset($_SESSION['userid'])){
         header("Location: Login.php");
         exit();
     }
-    
+
     $userId = $_SESSION['userid'];
-    
-    if (isset($_POST['btnUpload'])) 
+
+    if (isset($_POST['btnUpload']))
     {
         if ($_FILES['imgUpload']['error'][0] == 0)
-        { 	
+        {
             $total = count($_FILES['imgUpload']['name']);
             $number = 0;
             for( $i=0 ; $i < $total ; $i++ ) {
 
                 //Get the temp file path
                 $tmpFilePath = $_FILES['imgUpload']['tmp_name'][$i];
-                
-                
-                
+
+
+
                 //Make sure we have a file path
                 if ($tmpFilePath != ""){
                     //Setup our new file path
@@ -63,7 +53,7 @@
                     if(move_uploaded_file($tmpFilePath, $newFilePath)) {
                         //echo "<script>alert('copy success')</script>";
                         $exploded = explode('.',$newFilePath);
-                        $ext = $exploded[count($exploded) - 1]; 
+                        $ext = $exploded[count($exploded) - 1];
                         if (preg_match('/jpg|jpeg/i',$ext))
                             $imageTmp=imagecreatefromjpeg($newFilePath);
                         else if (preg_match('/png/i',$ext))
@@ -87,18 +77,18 @@
                         $number++;
                         unlink($newFilePath);
                     }
-                    
+
                 }
             }
 //            $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION);
-//            
+//
 //            $total = count($_FILES['imgUpload']['name']);
 //            for( $i=0 ; $i < $total ; $i++ ) {
 //                $sqlQ = "INSERT INTO Picture (Album_Id, FileName, Title, Description, Date_Added) VALUES (:Album_Id, :FileName, :Title, :Description, :Date_Added)";
 //                $pQ = $myPdo -> prepare($sqlQ);
 //                $pQ -> execute(['Album_Id' => $userId, 'FileName' => $imgUpload, 'Title' => $title, 'Description' => $description, 'Date_Added' => date('Y-m-d')]);
 //            }
-//            
+//
 //            $imageDetails = getimagesize($filePath);
 //
 //            if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes))
@@ -109,13 +99,13 @@
 //            }
 //            else
 //            {
-//                $error = "Uploaded file is not a supported type"; 
+//                $error = "Uploaded file is not a supported type";
 //                unlink($filePath);
 //            }
         }
         elseif ($_FILES['imgUpload']['error'] == 1)
         {
-            $error = "Upload file is too large"; 
+            $error = "Upload file is too large";
         }
         elseif ($_FILES['imgUpload']['error'] == 4)
         {
@@ -123,7 +113,7 @@
         }
         else
         {
-            $error  = "Error happened while uploading the file. Try again late ".var_dump($_FILES['imgUpload']['error']); 
+            $error  = "Error happened while uploading the file. Try again late ";
         }
     }
     ?>
@@ -132,7 +122,7 @@
         <div class="col-lg-6 col-md-6 col-sm-6 text-center">
             <h1>Upload Pictures</h1>
         </div>
-    </div>        
+    </div>
     <br/>
 
     <h4>Accepted picture types: JPG(JPEG), GIF and PNG.</h4>
@@ -141,17 +131,17 @@
     <br/>
 
     <form method='post' action='UploadPictures.php' enctype="multipart/form-data">
-        <span class='error'><?php echo $error;?></span>
+        <span class='error'><?php if(isset($error)) echo $error;?></span>
         <br>
         <br>
         <div class='form-group row'>
             <div class='col-lg-2 col-md-2 col-sm-2'>
                 <label for='title' class='col-form-label'><b>Upload to Album:</b> </label>
             </div>
-            <div class='col-lg-4'>                
-                <select name='album' class='form-control' >       
-                        <option value='0'></option>;  
-                        <?php   
+            <div class='col-lg-4'>
+                <select name='album' class='form-control' >
+                        <option value='0'></option>;
+                        <?php
                             $sqlQ = "SELECT Album_Id,Title FROM Album WHERE Owner_Id = :UserId";
                             $pQ = $myPdo -> prepare($sqlQ);
                             $pQ -> execute(['UserId' => $userId]);
@@ -159,25 +149,25 @@
                                 echo '<option value="'.$row['Album_Id'].'">'.$row['Title'];
                                 echo '</option>';
                             }
-                        ?>         
-                </select>  
-            </div>  
-        </div>        
+                        ?>
+                </select>
+            </div>
+        </div>
 
         <div class='form-group row'>
             <div class='col-lg-2 col-md-2 col-sm-2'>
                 <label for='acessibility' class='col-form-label'><b>File to Upload:</b></label>
             </div>
-            <div class='col-lg-4'>  
+            <div class='col-lg-4'>
                 <input type="file" name="imgUpload[]" size="40" accept="image/*" multiple="multiple"/>
-            </div>  
+            </div>
         </div>
 
         <div class='form-group row'>
             <div class='col-lg-2 col-md-2 col-sm-2'>
                 <label for='title' class='col-form-label'><b>Title:</b> </label>
             </div>
-            <div class='col-lg-4'> 
+            <div class='col-lg-4'>
                 <input type="text" name="title" class='form-control'>
             </div>
         </div>
@@ -186,7 +176,7 @@
             <div class='col-lg-2 col-md-2 col-sm-2'>
                 <label for='description' class='col-form-label'><b>Description:</b> </label>
             </div>
-            <div class='col-lg-4'> 
+            <div class='col-lg-4'>
                 <textarea  class='form-control' id='descriptionTxt'  name='description' style='height:150px'></textarea>
             </div>
         </div>
@@ -200,7 +190,7 @@
             <div class='col-lg-2 col-md-2 col-sm-2 text-left'>
                 <button type='reset' name="btnReset" value="Reset" class='btn btn-block btn-primary col-lg-3'>Clear</button>
             </div>
-        </div> 
+        </div>
     </form>
     <br>
     <br>
