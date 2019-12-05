@@ -28,9 +28,12 @@
         $fv = $myPdo->prepare($sqlFriendValidation);
         $fv->execute(['userId'=>$userId]);
         foreach ($fv as $friShip) {
-            if($friShip["Friend_RequesterId"]==$friendId||$friShip["Friend_RequesteeId"]==$friendId){
-                if($friShip["Status"]==0)
-                    $isFriend = true;
+            //var_dump($friShip);
+            // echo $friShip["Friend_RequesterId"]."\n";
+            // echo $friShip["Friend_RequesteeId"]."\n";
+            // echo $friendId."->\n";
+            if(strtolower($friShip["Friend_RequesterId"])==strtolower($friendId)||strtolower($friShip["Friend_RequesteeId"]==$friendId)){
+                $isFriend = true;
             }
         }
     }
