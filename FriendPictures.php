@@ -53,7 +53,7 @@
             $TheAlbum = $fA["Album_Id"];
         }
     }
-    if(isset($_GET['img'])){
+    if(isset($_GET['img'])&&$_GET['img']){
         $defImgSql = "SELECT * from Picture where Picture_Id=:pcid";
         $defImgStatement = $myPdo->prepare($defImgSql);
         $defImgStatement->execute(['pcid'=>$_GET['img']]);
@@ -71,7 +71,11 @@
         $defImgInfo = $defImgStatement->fetch();
         $defImg = $defImgInfo['Picture_Id'];
         $TheImg = $defImg;
-        header("Location: FriendPictures.php?img=".$defImg);
+        if($TheImg)
+            header("Location: FriendPictures.php?img=".$defImg);
+        else{
+            $nullImages=true;
+        }
     }
     // $sqlFriendValidation = "SELECT  from User where "
     // if(isset($_POST['album'])){
