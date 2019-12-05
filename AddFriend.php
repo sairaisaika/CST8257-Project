@@ -87,7 +87,6 @@
                         . "VALUES(:requesterId, :requesteeId, :status)";
                 $pStmt = $myPdo->prepare($sql);
                 $pStmt->execute(array(':requesterId' => $_SESSION['userid'], ':requesteeId' => $_SESSION['friendId'], ':status' => 1));
-                $pStmt->commit;
 
                 $friendError = "Your request was sent to ".$id[1]." (ID:".$id[0].")."
                         ."<br>"
