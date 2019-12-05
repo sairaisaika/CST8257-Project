@@ -10,20 +10,27 @@
     $isPostback = isset($_POST['album']);
     $TheAlbum;
     $nullImages=false;
-    if(isset($_POST['album'])){
-        $_SESSION['album'] = $_POST['album'];
+    //action=album&id
+    if($_GET['action']=="album"){
+        $_SESSION['album'] = $_GET['id'];
         $TheAlbum = $_SESSION['album'];
-    }else {
-        if(isset($_SESSION['album'])){
+    }else{
+        if(isset($_POST['album'])){
+            $_SESSION['album'] = $_POST['album'];
             $TheAlbum = $_SESSION['album'];
-        }else{
-            $sqlAl = "SELECT * from Album where Owner_Id=:userId";
-            $Albs = $myPdo->prepare($sqlAl);
-            $Albs->execute(['userId'=>$userId]);
-            $fA = $Albs->fetch();
-            $TheAlbum = $fA["Album_Id"];
+        }else {
+            if(isset($_SESSION['album'])){
+                $TheAlbum = $_SESSION['album'];
+            }else{
+                $sqlAl = "SELECT * from Album where Owner_Id=:userId";
+                $Albs = $myPdo->prepare($sqlAl);
+                $Albs->execute(['userId'=>$userId]);
+                $fA = $Albs->fetch();
+                $TheAlbum = $fA["Album_Id"];
+            }
         }
     }
+
 
     //$TheImg;
 
