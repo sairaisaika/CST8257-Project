@@ -115,7 +115,13 @@
 ?>
 <link rel="stylesheet" type="text/css" href="./src/css/gallery.css" />
 <div class="container main">
-    <h2><?php echo $friendId; ?> Pictures</h2>
+    <?php
+        $friendNameSql = "SELECT Name from User where UserId=:userId;";
+        $fns = $myPdo->prepare($friendNameSql);
+        $fns->execute(['userId'=>$friendId]);
+        $friendName=$fns->fetch();
+    ?>
+    <h2><?php echo $friendName[0]; ?> Pictures</h2>
     <div class="row main">
         <div class="col-md-8 col-sm-12">
             <form action="FriendPictures.php" method="post">
