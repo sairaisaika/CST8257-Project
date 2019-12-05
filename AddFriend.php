@@ -23,7 +23,7 @@
     $printName = $pStmt->fetch();
 
     if(isset($_POST['sendRequest'])){
-        $sql = "SELECT * FROM User WHERE UserId = :userId";
+        $sql = "SELECT * FROM User WHERE BINARY UserId = :userId";
         $pStmt = $myPdo->prepare($sql);
         $pStmt->execute([':userId' => $friendId]);
         $chekId = $pStmt->fetch();
