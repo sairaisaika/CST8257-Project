@@ -119,7 +119,7 @@
                         $img_name = $img["FileName"];
                         $img_path = "./imgs/".$img_name;
                         ?>
-                        <button style="height:100%;width:20%;background:url(<?php echo $img_path; ?>);background-size:cover;" onclick="changeImg(<?php echo $img['Picture_Id']; ?>)"/>
+                        <button style="height:100%;width:20%;background:url(<?php echo $img_path; ?>);background-size:cover;<?php if($img['Picture_Id']==$TheImg) echo 'border:blue solid;' ?>" onclick="changeImg(<?php echo $img['Picture_Id']; ?>)"/>
                         <?php
                     }
                 ?>
