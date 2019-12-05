@@ -8,9 +8,9 @@
         header("Location: login.php");
     }
     
-    $sql = "SELECT Name from User WHERE UserId=:UserId";
+    $sql = "SELECT Name from User WHERE UserId= :userId";
     $pStmt = $myPdo->prepare($sql);
-    $pStmt->execute([':UserId' => $_SESSION["userid"]]);
+    $pStmt->execute([':userId' => $_SESSION["userid"]]);
     $printName = $pStmt->fetch();
     
     $friendsError = "";

@@ -67,7 +67,6 @@
         <h4>Welcome <b><?php print $printName[0];?></b> (Not you? Change your session <a href="Login.php">here</a>)</h4>
 
         <form method='post' action='MyAlbums.php'>
-            <div class='col-lg-4' style='color:red'> <?php print $validatorError;?></div>
             <br><br><br>
             <div class='row'>               
                 <div class='col-lg-10 col-md-9 col-sm-9 col-xs-7'></div>
@@ -76,7 +75,6 @@
                 </div>
             </div>  
             <table class="table">
-                <!-- display table header -->
                 <thead>
                     <tr>
                         <th scope="col">Title</th>

@@ -8,8 +8,8 @@
         header("Location: login.php");
     }
     
-    $friendId = htmlspecialchars($_POST["friendId"]);
-    $_SESSION['friendId'] = htmlspecialchars($_POST["friendId"]);
+    $friendId = $_POST["friendId"];
+    $_SESSION['friendId'] = $_POST["friendId"];
     
     $friendError ="";
     
