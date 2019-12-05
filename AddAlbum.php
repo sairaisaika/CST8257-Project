@@ -18,8 +18,8 @@
     $titleError = "";
     $accessibility = $_POST['accessibility'];
     $accessibilityError = "";
-    $description = $_POST['discription'];
-    $_SESSION['discription'] = $description;
+    $description = $_POST['description'];
+    $_SESSION['description'] = $description;
     
     $sql = "SELECT * FROM `Accessibility`";
     $pStmt = $myPdo->prepare($sql); 
@@ -53,9 +53,11 @@
         if($titleError == "" && $acessibilityError == ""){
             $albumId = null;
             $date = date("Y/m/d");
-            $access = $_POST['acessibility']; 
+            $access = $_POST['accessibility']; 
             
-            $sql = "INSERT INTO `Album` (Album_Id, Title, Description, Date_Updated, Owner_Id, Accessibility_Code) VALUES (:albumId, :albumTitle, :albumDescription, :albumDate, :userID, :accessibility) ";
+            //$sql = "INSERT INTO `Album` (Album_Id, Title, Description, Date_Updated, Owner_Id, Accessibility_Code) VALUES (:albumId, :albumTitle, :albumDescription, :albumDate, :userID, :accessibility) ";
+            //$mar = "INSERT INTO `Album` (`Album_Id`, `Title`, `Description`, `Date_Updated`, `Owner_Id`, `Accessibility_Code`) VALUES (NULL, 'test', 'a test', '2019-12-04', 'MacG', 'shared')";
+            $sql = "INSERT INTO `Album` (`Album_Id`, `Title`, `Description`, `Date_Updated`, `Owner_Id`, `Accessibility_Code`) VALUES (:albumId, :albumTitle, :albumDescription, :albumDate, :userID, :accessibility)";
             $pStmt = $myPdo->prepare($sql); 
             $pStmt->execute(array(':albumId' => $albumId , ':albumTitle' => $title, ':albumDescription' => $description, ':albumDate' => $date, ':userID' => $_SESSION['userid'], ':accessibility' => $access));            
             $pStmt->commit;

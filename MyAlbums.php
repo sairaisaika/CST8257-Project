@@ -15,18 +15,28 @@
     
     $accessibilityArray = $_SESSION['accessibilityArray'];
     
-    $sql = "SELECT a.Title, a.Date_Updated, ac.Description, a.Album_Id, COALESCE(pictures, 0) number_pictures "
-            . "FROM Album' a "
-            . "LEFT JOIN (SELECT count(*) as pictures, Album_Id FROM picture GROUP BY Album_Id) p ON a.Album_Id = p.Album_Id "
-            . "INNER JOIN accessibility ac ON ac.Accessibility_Code = a.Accessibility_Code "
+    $sql = "SELECT a.Title, a.Date_Updated, ac.Description, a.Album_Id, COALESCE(picture, 0) number_pictures "
+            . "FROM Album a "
+            . "LEFT JOIN (SELECT count(*) as Picture, Album_Id FROM Picture GROUP BY Album_Id) p ON a.Album_Id = p.Album_Id "
+            . "INNER JOIN Accessibility ac ON ac.Accessibility_Code = a.Accessibility_Code "
             . "WHERE a.Owner_Id = :userId ORDER BY a.Title";
     $pStmt = $myPdo->prepare($sql);
     $pStmt->execute ( [':userId' => $_SESSION['userid']] );
     $albumByUser = $pStmt->fetchAll();
     
-    $sql = "SELECT * FROM 'Accessibility' ";    
+    $sql = "SELECT * FROM Accessibility";    
     $pStmt = $myPdo->prepare($sql); 
     $pStmt->execute();
+    
+    if ($_GET['action']== 'delete' && isset($_GET['id'])){
+        $ID = $_GET['id'];  
+        $deletePictures = "DELETE FROM Picture WHERE Album_Id = :albumID";            
+        $stmt = $myPdo->prepare($deletePictures);
+        $delalbum = "DELETE FROM Album WHERE Album.Album_Id = :albumID";
+        $stmt1 = $myPdo->prepare($delalbum);
+        $stmt->execute([albumID => $ID]);
+        $stmt1->execute([':albumID' => $ID]);
+    }  
     
     $accessibilityArray = null;
     foreach ($pStmt as $row)
@@ -38,7 +48,7 @@
     
     if(isset($_POST['submit'])){
         if(isset($_POST['selectAcessibility'])){
-            $sql = "UPDATE 'Album' SET Accessibility_Code = :access_code WHERE Album_Id = :album_id";
+            $sql = "UPDATE Album SET Accessibility_Code = :access_code WHERE Album_Id = :album_id";
             $options = $_POST['selectAcessibility'];
             for ($i=0; $i < count($options); $i++) {
                 $albumByUser[$i][2] = $options[$i];
@@ -54,7 +64,7 @@
         <br>
         <h1>My Albums</h1>
         <br>
-        <h4>Welcome <b><?php print $printName[0];?></b>! (Not you? Change your session <a href="Login.php">here</a>)</h4>
+        <h4>Welcome <b><?php print $printName[0];?></b> (Not you? Change your session <a href="Login.php">here</a>)</h4>
 
         <form method='post' action='MyAlbums.php'>
             <div class='col-lg-4' style='color:red'> <?php print $validatorError;?></div>
