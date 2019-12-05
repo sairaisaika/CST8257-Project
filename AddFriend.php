@@ -4,10 +4,10 @@
     include_once './src/Lab5Common/Functions.php';
     include_once './src/Lab5Common/Footer.php';
 
-    
-    
-    
-    
+
+
+
+
     if(!isset($_SESSION['userid'])){
         header("Location: login.php");
     }
@@ -27,7 +27,7 @@
         $pStmt = $myPdo->prepare($sql);
         $pStmt->execute([':userId' => $friendId]);
         $chekId = $pStmt->fetch();
-        
+
         $sql= "SELECT * FROM Friendship"
                 . " WHERE Friend_RequesterId = :requestrId AND Friend_RequesteeId = :requesteeId AND Status = :status";
         $pStmt = $myPdo->prepare($sql);
@@ -45,13 +45,13 @@
         $pStmt =$myPdo->prepare($sql);
         $pStmt->execute(array(':userId' => $_SESSION['userid'], ':friendId' => $_SESSION['friendId'], ':status' => 1));
         $pending = $pStmt->fetch();
-        
+
         $sql = "SELECT * FROM Friendship"
                 . " WHERE Friend_RequesterId = :userId AND Friend_RequesteeId = :friendId AND Status = :status";
         $pStmt =$myPdo->prepare($sql);
         $pStmt->execute(array(':userId' => $_SESSION['userid'], ':friendId' => $_SESSION['friendId'], ':status' => 1));
         $pendingFriend = $pStmt->fetch();
-        
+
         if($pendingFriend != null){
             $friendError = "You can not send an invitation twice";
         }
@@ -112,7 +112,7 @@
                     <label for='friendId' class='col-form-label'><b>ID:</b> </label>
                 </div>
                 <div>
-                    <input type='text' class='form-control' id='friendId' name='friendId' value='<?php print $_SESSION['friendId']; ?>' >
+                    <input type='text' class='form-control' id='friendId' name='friendId' value='<?php if(isset($_SESSION['friendId'])) print $_SESSION['friendId']; ?>' >
                 </div>
                 <br>
                 <div >
