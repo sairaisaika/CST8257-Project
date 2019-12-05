@@ -16,7 +16,21 @@
     define(THUMB_DESTINATION, "./thumbnails");  
     define(THUMB_MAX_WIDTH, 100);
     define(THUMB_MAX_HEIGHT, 100);
-
+    
+    $title;
+    $description;
+    $album_id;
+    if(isset($_POST['title'])){
+        $title=$_POST['title'];
+    }
+    if(isset($_POST['description'])){
+        $description=$_POST['description'];
+    }
+    if(isset($_POST['album'])){
+        $album_id = $_POST['album'];
+    }
+//    echo $album_id;
+//    
     //Use an array to hold supported image types for convenience
     $supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
     
@@ -24,33 +38,61 @@
         header("Location: Login.php");
         exit();
     }
+    
     $userId = $_SESSION['userid'];
+    
     if (isset($_POST['btnUpload'])) 
     {
-        if ($_FILES['imgUpload']['error'] == 0)
+        if ($_FILES['imgUpload']['error'][0] == 0)
         { 	
-            $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION);
-            
             $total = count($_FILES['imgUpload']['name']);
             for( $i=0 ; $i < $total ; $i++ ) {
-                $sqlQ = "INSERT INTO Picture (Album_Id, FileName, Title, Description, Date_Added) VALUES (:Album_Id, :FileName, :Title, :Description, :Date_Added)";
-                $pQ = $myPdo -> prepare($sqlQ);
-                $pQ -> execute(['Album_Id' => $userId, 'FileName' => $imgUpload, 'Title' => $title, 'Description' => $description, 'Date_Added' => date('Y-m-d')]);
-            }
-            
-            $imageDetails = getimagesize($filePath);
 
-            if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes))
-            {
-                resamplePicture($filePath, IMAGE_DESTINATION, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+                //Get the temp file path
+                $tmpFilePath = $_FILES['imgUpload']['tmp_name'][$i];
 
-                resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
+                //Make sure we have a file path
+                if ($tmpFilePath != ""){
+                    //Setup our new file path
+                    $newFilePath = "./imgs/" . $_FILES['imgUpload']['name'][$i];
+
+                    //Upload the file into the temp dir
+                    if(move_uploaded_file($tmpFilePath, $newFilePath)) {
+                        //echo "<script>alert('copy success')</script>";
+                        $sqlQ = "INSERT INTO Picture (Album_Id, FileName, Title, Description, Date_Added) VALUES (:Album_Id, :FileName, :Title, :Description, :Date_Added);";
+                        $pQ = $myPdo -> prepare($sqlQ);
+    //                    echo $_FILES['imgUpload']['name'][$i];
+
+                        $pQ -> execute(['Album_Id' => $album_id, 'FileName' => $_FILES['imgUpload']['name'][$i], 'Title' => $title, 'Description' => $description, 'Date_Added' => date('Y-m-d')]);
+    //                    var_dump($pQ->errorInfo());
+                    }
+//                    else{
+//                    echo "<script>alert('copy failed')</script>";
+//                    }
+                }
             }
-            else
-            {
-                $error = "Uploaded file is not a supported type"; 
-                unlink($filePath);
-            }
+//            $filePath = save_uploaded_file(ORIGINAL_IMAGE_DESTINATION);
+//            
+//            $total = count($_FILES['imgUpload']['name']);
+//            for( $i=0 ; $i < $total ; $i++ ) {
+//                $sqlQ = "INSERT INTO Picture (Album_Id, FileName, Title, Description, Date_Added) VALUES (:Album_Id, :FileName, :Title, :Description, :Date_Added)";
+//                $pQ = $myPdo -> prepare($sqlQ);
+//                $pQ -> execute(['Album_Id' => $userId, 'FileName' => $imgUpload, 'Title' => $title, 'Description' => $description, 'Date_Added' => date('Y-m-d')]);
+//            }
+//            
+//            $imageDetails = getimagesize($filePath);
+//
+//            if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes))
+//            {
+//                resamplePicture($filePath, IMAGE_DESTINATION, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+//
+//                resamplePicture($filePath, THUMB_DESTINATION, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
+//            }
+//            else
+//            {
+//                $error = "Uploaded file is not a supported type"; 
+//                unlink($filePath);
+//            }
         }
         elseif ($_FILES['imgUpload']['error'] == 1)
         {
@@ -62,7 +104,7 @@
         }
         else
         {
-            $error  = "Error happened while uploading the file. Try again late"; 
+            $error  = "Error happened while uploading the file. Try again late ".var_dump($_FILES['imgUpload']['error']); 
         }
     }
     ?>
@@ -95,7 +137,7 @@
                             $pQ = $myPdo -> prepare($sqlQ);
                             $pQ -> execute(['UserId' => $userId]);
                             foreach ($pQ as $row){
-                                echo '<option value="'.$row['Title'].'">'.$row['Title'];
+                                echo '<option value="'.$row['Album_Id'].'">'.$row['Title'];
                                 echo '</option>';
                             }
                         ?>         
