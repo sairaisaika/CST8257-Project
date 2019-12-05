@@ -12,7 +12,7 @@
     if($retry){
         $userId = $_POST['id'];
         $userPassword = sha1($_POST['password']);
-        $sqlQ = "SELECT UserId, Password from User where UserId=:UserId";
+        $sqlQ = "SELECT UserId, Password from User where BINARY UserId=:UserId";
         $pQ = $myPdo->prepare($sqlQ);
         $pQ->execute(['UserId'=>$userId]);
         if($pQ->rowCount()==1){
