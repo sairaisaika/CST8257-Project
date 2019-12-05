@@ -137,53 +137,46 @@
             ?>              
         </tbody>
         </table>
-        <div class='form-group row'>               
-            <label for='' class='col-lg-7 col-form-label'><b></b> </label>            
-            <div >                    
-            <button type='submit' name='defriendButton' class='btn btn-primary col-lg-5' onclick='return confirm("The selected friend will be defriended!")'>Defriend Selected</button>  
-            </div> 
-        </div>     
-        
-            <br><br><table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Friend Requests:</th>
-                    <th scope="col"></th>                                                                             
-                </tr>
-                <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Accept or Deny</th>                                                                             
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-            $sql = "SELECT User.UserId, User.Name FROM User "
-                    . "INNER JOIN Friendship ON Friendship.Friend_RequesterId = User.UserId "
-                    . "WHERE Friendship.Status = 1 AND Friendship.Friend_RequesteeId = :userId ";        
-            $pStmt = $myPdo->prepare($sql);
-            $pStmt->execute ( [':userId' => $_SESSION['userid'] ]);
-            $requestFriend = $pStmt->fetchAll();
-            foreach ($requestFriend as $friendName)
-            {
-                echo "<tr>";
-                echo "<td scope='col'>".$friendName[1]."</td>";
-                echo "<td>&nbsp;</td>";
-                echo "<td scope='col'><input type='checkbox' name='acceptDeny[]' value='$friendName[0]' /></td>";            
-                echo "</tr>";
-            }            
-            ?>   
-            </tbody>
-        </table> 
-        <div class='form-group row'>               
-            <label for='' class='col-lg-5 col-form-label'><b></b> </label>            
-            <div class='col-lg-7'>                    
-                <button type='submit' name='accept' class='btn btn-primary col-lg-2'>Accept Selected</button>
-            </div> 
-            <br>
-            <div class='col-lg-7'> 
-                <button type='submit' name='deny' class='btn btn-primary ' onclick='return confirm("The selected request will be denied!")'>Deny Selected</button>
-            </div>
-         </div> 
+        <div>                    
+            <button type='submit' name='defriendButton' class='btn btn-primary' onclick='return confirm("The selected friend will be defriended!")'>Defriend Selected</button>  
         </div>
-        </form> 
+        <br>
+        <br>
+        <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Friend Requests:</th>
+                <th scope="col"></th>                                                                             
+            </tr>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Accept or Deny</th>                                                                             
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        $sql = "SELECT User.UserId, User.Name FROM User "
+                . "INNER JOIN Friendship ON Friendship.Friend_RequesterId = User.UserId "
+                . "WHERE Friendship.Status = 1 AND Friendship.Friend_RequesteeId = :userId ";        
+        $pStmt = $myPdo->prepare($sql);
+        $pStmt->execute ( [':userId' => $_SESSION['userid'] ]);
+        $requestFriend = $pStmt->fetchAll();
+        foreach ($requestFriend as $friendName)
+        {
+            echo "<tr>";
+            echo "<td scope='col'>".$friendName[1]."</td>";
+            echo "<td>&nbsp;</td>";
+            echo "<td scope='col'><input type='checkbox' name='acceptDeny[]' value='$friendName[0]' /></td>";            
+            echo "</tr>";
+        }            
+        ?>   
+        </tbody>
+        </table>         
+        <div>                    
+            <button type='submit' name='accept' class='btn btn-primary'>Accept Selected</button>
+        </div> 
+        <br>
+        <div> 
+            <button type='submit' name='deny' class='btn btn-primary ' onclick='return confirm("The selected request will be denied!")'>Deny Selected</button>
+        </div>
     </div>

@@ -62,7 +62,7 @@
             $id = $pStmt->fetch();
 
             if($chekId == null){
-                $friendError = "There is no User with the ID!";
+                $friendError = "There is no User with the ID";
             }
             else if($_SESSION['userid']
                     == $_SESSION['friendId']){
@@ -108,14 +108,14 @@
 
         <form method='post' action=AddFriend.php>
             <br><br><div class="row">
-                <div class="col-lg-1" >
+                <div>
                     <label for='friendId' class='col-form-label'><b>ID:</b> </label>
                 </div>
-                <div class="col-lg-3" >
+                <div>
                     <input type='text' class='form-control' id='friendId' name='friendId' value='<?php print $_SESSION['friendId']; ?>' >
                 </div>
                 <br>
-                <div class="col-lg-5" >
+                <div >
                     <button type='submit' name='sendRequest' class='btn btn-primary'>Send Friend Request</button>
                 </div>
                 <br><div class='col-lg-10' style='color:red'> <?php print $friendError;?></div>
