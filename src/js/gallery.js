@@ -68,3 +68,6 @@ function changeImg(imgId) {
 function changeImgFri(imgId) {
     window.location.href = "./FriendPictures.php?img="+imgId;
 }
+function delImage(id){
+    window.location.href = "./del_image.php?imgId="+id;
+}

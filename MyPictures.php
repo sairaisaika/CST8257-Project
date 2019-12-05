@@ -112,7 +112,7 @@
                 <button id="rc" onclick="loadimage('acw')"></button>
                 <button id="lc" onclick="loadimage('cw')"></button>
                 <button id="dl" onclick="downloadImg('<?php echo $TheImg; ?>')"></button>
-                <button id="rm" onclick=""></button>
+                <button id="rm" onclick="delImage('<?php echo $TheImg; ?>')"></button>
             </div>
             <div id="thumbnail">
                 <?php
