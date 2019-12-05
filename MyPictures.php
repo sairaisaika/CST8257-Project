@@ -39,7 +39,7 @@
     // }else {
     //
     // }
-    if(isset($_GET['img'])){
+    if(isset($_GET['img'])&&$_GET['img']){
         $defImgSql = "SELECT * from Picture where Picture_Id=:pcid";
         $defImgStatement = $myPdo->prepare($defImgSql);
         $defImgStatement->execute(['pcid'=>$_GET['img']]);
@@ -57,7 +57,11 @@
         $defImgInfo = $defImgStatement->fetch();
         $defImg = $defImgInfo['Picture_Id'];
         $TheImg = $defImg;
-        header("Location: MyPictures.php?img=".$defImg);
+        if($TheImg)
+            header("Location: MyPictures.php?img=".$defImg);
+        else{
+            $nullImages=true;
+        }
     }
     //     /*
     //     $sqlAl = "SELECT * from Album where Owner_Id=:userId";
