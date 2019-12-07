@@ -12,8 +12,8 @@
     $pStmt = $myPdo->prepare($sql);
     $pStmt->execute([':UserId' => $_SESSION["userid"]]);
     $printName = $pStmt->fetch();
-
-    $accessibilityArray = $_SESSION['accessibilityArray'];
+    if(isset($_SESSION['accessibilityArray']))
+        $accessibilityArray = $_SESSION['accessibilityArray'];
 
     $sql = "SELECT a.Title, a.Date_Updated, ac.Description, a.Album_Id, COALESCE(picture, 0) number_pictures "
             . "FROM Album a "

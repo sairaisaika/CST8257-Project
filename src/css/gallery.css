@@ -69,6 +69,7 @@ h2{
     margin-top: 10px;
     height: 120px;
     border: 1px solid;
+    white-space:nowrap;
 }
 .drp{
     margin-bottom: 5px;
